@@ -6,6 +6,8 @@
     <form action="" method="post">
         {{ form.hidden_tag() }}
         <p>
+            {{ form.csrt_token }}
+            {{ form.memodate.label }} {{form.memodate(class='datepicker')}} {{form.hidden_tag()}}
             {{ form.memo.label }}<br>
             {{ form.memo(cols=32, rows=4) }}<br>
             {% for error in form.memo.errors %}

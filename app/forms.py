@@ -4,6 +4,7 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, \
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, \
     Length
 from app.models import User
+from wtforms.fields import DateField
 
 
 class LoginForm(FlaskForm):
@@ -54,4 +55,6 @@ class EmptyForm(FlaskForm):
 
 class MemoForm(FlaskForm):
     memo = TextAreaField('Memo', validators=[DataRequired()])
+    memodate = DateField('Memo Date', format='%Y-%m-%d', validators=[DataRequired()])
     submit = SubmitField('Submit')
+

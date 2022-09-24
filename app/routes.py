@@ -1,12 +1,13 @@
 from datetime import datetime
-from flask import render_template, flash, redirect, url_for, request
+from flask import render_template, flash, redirect, url_for, request, session
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
+
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, \
     EmptyForm, MemoForm
-from app.models import User, Memo
 
+from app.models import User, Memo
 
 @app.before_request
 def before_request():
@@ -21,7 +22,8 @@ def before_request():
 def index():
     form = MemoForm()
     if form.validate_on_submit():
-        memo = Memo(body=form.memo.data, author=current_user)
+        memo = Memo(body=form.memo.data, memodate=form.memodate.data, author=current_user)
+
         db.session.add(memo)
         db.session.commit()
         flash('Your memo is now live!')
@@ -30,8 +32,6 @@ def index():
 
     return render_template('index.html', title='Home', form=form,
                             )
-
-
 
 
 
@@ -100,3 +100,4 @@ def edit_profile():
         form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', title='Edit Profile',
                            form=form)
+

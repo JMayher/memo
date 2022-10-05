@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField, \
-    TextAreaField
+    TextAreaField, IntegerField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, \
     Length
 from app.models import User
@@ -56,5 +56,10 @@ class EmptyForm(FlaskForm):
 class MemoForm(FlaskForm):
     memo = TextAreaField('Memo', validators=[DataRequired()])
     memodate = DateField('Memo Date', format='%Y-%m-%d', validators=[DataRequired()])
+    submit = SubmitField('Submit')
+
+class BudgetForm(FlaskForm):
+    budgettitle =  StringField('Budget Title', validators=[Length(min=5, max=100)])
+    budgetamount = IntegerField('Budget Amount')
     submit = SubmitField('Submit')
 

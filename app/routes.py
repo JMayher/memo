@@ -1,13 +1,13 @@
 from datetime import datetime
-from flask import render_template, flash, redirect, url_for, request, session
+from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_user, logout_user, current_user, login_required
 from werkzeug.urls import url_parse
 
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, EditProfileForm, \
-    EmptyForm, MemoForm
+    EmptyForm, MemoForm, BudgetForm
 
-from app.models import User, Memo
+from app.models import User, Memo, Budget
 
 @app.before_request
 def before_request():
@@ -100,4 +100,28 @@ def edit_profile():
         form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', title='Edit Profile',
                            form=form)
+
+@app.route('/budget', methods=['GET', 'POST'])
+@login_required
+def budget():
+    form = BudgetForm()
+    if form.validate_on_submit():
+        budget = Budget(budgettitle=form.budgettitle.data, budgetamount=form.budgetamount.data, author=current_user)
+
+        db.session.add(budget)
+        db.session.commit()
+        return redirect(url_for('budget'))
+    page = request.args.get('page', 1, type=int)
+    return render_template('budget.html', form=form)
+
+@app.route('/user_budget/<username>', methods=['GET', 'POST'])
+@login_required
+def user_budget(username):
+    user = User.query.filter_by(username=username).first_or_404()
+    page = request.args.get('page', 1, type=int)
+    budgets = user.budgets.paginate(
+        page, app.config['BUDGETS_PER_PAGE'], False)
+    form = EmptyForm()
+
+    return render_template('user_budget.html', user=user, budgets=budgets.items, form=form)
 

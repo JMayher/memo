@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ current_user.username }}'s budgets</h1>
+
+    {% for budget in budgets %}
+        {% include '_budget.html' %}
+    {% endfor %}
+
+{% endblock %}

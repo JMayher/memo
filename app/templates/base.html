@@ -2,19 +2,21 @@
 <html>
     <head>
         {% if title %}
-        <title>{{ title }} - Microblog</title>
+        <title>{{ title }} - Memo</title>
         {% else %}
-        <title>Welcome to Microblog</title>
+        <title>Welcome to Memo App</title>
         {% endif %}
     </head>
     <body>
         <div>
-            Microblog:
+            Memo:
             <a href="{{ url_for('index') }}">Home</a>
             {% if current_user.is_anonymous %}
             <a href="{{ url_for('login') }}">Login</a>
             {% else %}
             <a href="{{ url_for('user', username=current_user.username) }}">Profile</a>
+            <a href="{{ url_for('budget') }}">Create A Budget</a>
+            <a href="{{ url_for('user_budget', username=current_user.username) }}">Budgets</a>
             <a href="{{ url_for('logout') }}">Logout</a>
             {% endif %}
         </div>

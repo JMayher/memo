@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Hi, {{ current_user.username }}!</h1>
+    {% if form %}
+    <form action="" method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.csrt_token }}
+            {{ form.budgettitle.label }} {{ form.budgettitle(rows=1, cols=50) }} {{form.hidden_tag()}} <br><br>
+            {{ form.budgetamount.label }} {{form.budgetamount()}}<br>
+
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+    {% endif %}
+    {% for budget in budgets %}
+        {% include '_budget.html' %}
+    {% endfor %}
+{% endblock %}
